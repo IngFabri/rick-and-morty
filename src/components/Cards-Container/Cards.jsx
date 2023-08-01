@@ -1,4 +1,4 @@
-import Card from './Card';
+import Card from '../Card/Card';
 
 export default function Cards({ characters, onClose}) {
    return <div>{characters.map(({ id, name, status, species, gender, origin, image }) => {
