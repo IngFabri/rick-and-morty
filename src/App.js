@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import Form from "./components/Form/Form";
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import Favorites from './components/Favorites/Favorites';
 
 function App() {
 const location = useLocation();
@@ -51,6 +52,7 @@ const onClose = (id)=> {
       <div className='App'>
          {location.pathname !== "/" && <Nav onSearch={onSearch}/>}
             <Routes>
+               <Route path="/favorites" element={<Favorites/>}/>
                <Route path="/" element={<Form login={login}/>}/>
                <Route path="/home" element={<Cards onClose={onClose} characters={characters} />}/>
                <Route path="/about" element={<About/>}/>
