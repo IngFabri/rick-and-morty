@@ -1,0 +1,6 @@
+.Container{
+    border: solid;
+    border-color: black;
+    height: auto;
+    width: 300px;
+}
