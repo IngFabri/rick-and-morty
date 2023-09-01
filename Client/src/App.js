@@ -16,36 +16,52 @@ function App() {
 const location = useLocation();
 let [characters, setCharacters] = useState([]);
 let [access, setAccess] = useState(false)
-const EMAIL = "fabri021090@gmail.com"
-const PASSWORD = "Contra123"
+const [renderedCharacterIds, setRenderedCharacterIds] = useState([]);
 const navigate = useNavigate()
-const login = (userData)=> {
-   if(userData.email === EMAIL && userData.password === PASSWORD) {
-      setAccess(true)
-      navigate("/home")
+
+async function login(userData) {
+   try {
+      const { email, password } = userData;
+      const URL = 'http://localhost:3001/rickandmorty/login/';
+      const {data} = await axios(URL + `?email=${email}&password=${password}`)
+         const { access } = data;
+         setAccess(access);
+         access && navigate('/home');
+      }      
+   catch (error) {
+      console.log(error.message)
    }
 }
+
 
 useEffect(() => {
    !access && navigate('/');
 }, [access]);
 
 
-function onSearch(id) {
-   axios(`https://rickandmortyapi.com/api/character/${id}`).then(({ data }) => {
-      if (data.name) {
-         setCharacters((oldChars) => [...oldChars, data]);
-      } else {
-         window.alert('¡No hay personajes con este ID!');
-      }
-   });
-}
+async function onSearch(id) {
+   try {
+      const {data} = await axios(`http://localhost:3001/rickandmorty/character/${id}`)
+
+      if (!data.name) throw new Error("No hay data")
+      if (renderedCharacterIds.includes(data.id)) throw new Error("Este personaje ya ha sido renderizado")
+
+      setRenderedCharacterIds((prevIds) => [...prevIds, data.id]);
+      setCharacters((oldChars) => [...oldChars, data]);
+      } 
+   catch (error) {
+      if(error.message.includes("No hay data")) alert("Id no encontrado")
+      if(error.message.includes("renderizado")) alert("Este personaje ya ha sido renderizado")
+   } 
+};
+
 
 const onClose = (id)=> {
    const filters = characters.filter((character) =>{
       return character.id !== Number(id)
    });
    setCharacters(filters)
+   setRenderedCharacterIds(filters.map(char=>char.id))
 }
 
    return (
