@@ -1,5 +1,6 @@
 import { useState } from "react";
 import validate from "../../validation"
+import style from "./Form.module.css"
 
 const Form = ({login})=> {
 
@@ -22,13 +23,13 @@ const Form = ({login})=> {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-            <label>Email:</label>
+        <div className={style.container}>
+            <form onSubmit={handleSubmit} className={style.formulario}>
+            <label className={style.label}>Email:</label>
             <input name ="email" value={userData.email} onChange={handleChange}></input>
             {errors.email && <p style={{color:"red"}}>{errors.email}</p>}
             <br/>
-            <label>Password:</label>
+            <label className={style.label}>Password:</label>
             <input name="password" value={userData.password} onChange={handleChange}></input>
             {errors.password && <p style={{color:"red"}}>{errors.password}</p>}
             <br/>
